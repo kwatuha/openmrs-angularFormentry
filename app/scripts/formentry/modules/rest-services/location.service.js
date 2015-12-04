@@ -25,7 +25,8 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
       getLocationByUuid: getLocationByUuid,
       getLocationByUuidFromEtl:getLocationByUuidFromEtl,
       findLocation: findLocation,
-      cachedLocations: cachedLocations
+      cachedLocations: cachedLocations,
+      getTestLocations:getTestLocations
     };
 
     return serviceDefinition;
@@ -82,7 +83,7 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
         });
     }
 
-    function findLocation(searchText, successCallback, failedCallback) {
+    function findLocation(searchText, successCallback, failedCallback) {       
       var resource = searchResource();
       return resource.get({ search: searchText }).$promise
         .then(function(response) {
@@ -91,7 +92,7 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
         .catch(function(error) {
           failedCallback('Error processing request', error);
           console.error(error);
-        });
+        });  
     }
 
     function getLocations(successCallback, failedCallback, refreshCache) {
@@ -112,5 +113,63 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
           console.error(error);
         });
     }
-  }
+    
+    //hardcoded locations for testing
+    
+    function findTestLocations (searchText) {       
+        var testAttrs=getTestLocations ();              
+        return _.filter(testAttrs, function(attr){ return  attr.display.toLowerCase().indexOf(searchText.toLowerCase())>-1 });      
+    }
+    
+    function getTestLocations (){
+      return [{
+                display:  'Health Center 2 = 9',
+                uuid:  'location5-uuid',
+                name:  'Location 5 = 5',
+                value: {
+                  uuid:  'location5-uuid',
+                  display:  'Location 5 = 5',
+                  name:  'Health Center 2'
+                },
+                attributeType: {
+                  uuid:  'fb121d9dc370',
+                  display:  'Health Center 2'
+                }
+              },
+              {
+                display:  'Health Center = 4',
+                uuid:  'location9-uuid',
+                name:  'Location 9 = 9',
+                value: {
+                  uuid:  'location2-uuid',
+                  display:  'Location 9 '
+                },
+                attributeType: {
+                  uuid:  '8d87236c-c2cc-11de-8d13-0010c6dffd0f',
+                  display:  'Health Center 2'
+                }
+              },
+              {
+                display:  'Test Health Center = 4',
+                uuid:  'location10-uuid',
+                name:  'Location 10 = 10',
+                value: {
+                  uuid:  'location3-uuid',
+                  display:  'Location 10 '
+                },
+                attributeType: {
+                  uuid:  '8d87236c-c2cc-11de-8d13-0010c6dffd0f',
+                  display:  'Health Center 2'
+                }
+              }];
+      
+    }
+    
+    function getSelectedTestLocation(locationId){
+      var locations=getTestLocations();
+      return locations[locationId];
+    }
+    
+     
+  }               
 })();

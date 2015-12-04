@@ -46,6 +46,17 @@
           "label":"Section Name",
           "questions":[
             {
+              "type":"personAttribute",
+              "label":"Person Attribute 1",
+              "id":"first_person_attribute",
+              "required":"true",
+              "default":"",
+              "questionOptions":{
+                "rendering":"ui-select-extended",
+                "attributeType":"1232"
+              }
+            },
+            {
               "type":"obs",
               "label":"question1",
               "id":"q1",

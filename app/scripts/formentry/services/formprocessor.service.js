@@ -11,14 +11,16 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
         .module('openmrs.angularFormentry')
         .factory('FormProcessorService', FormProcessorService);
 
-  FormProcessorService.$inject = ['ObsProcessorService'];
+  FormProcessorService.$inject = ['ObsProcessorService','PersonAttributesProcessorService'];
 
-  function FormProcessorService(ObsProcessorService) {
+  function FormProcessorService(ObsProcessorService,PersonAttributesProcessorService) {
       var service = {
         obsFormProccesor: obsFormProccesor,
         encounterFormProcessor: encounterFormProcessor,
+        personAttributeFormProccesor:personAttributeFormProccesor,
         addExistingDataSetToEncounterForm:addExistingDataSetToEncounterForm,
-        addExistingDataSetToObsForm:addExistingDataSetToObsForm
+        addExistingDataSetToObsForm:addExistingDataSetToObsForm,
+        
       };
 
       return service;
@@ -28,6 +30,14 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
         ObsProcessorService.generateObsPayload(model, function(payload) {
           obsPayload = payload;
           callback(obsPayload);
+        });
+      }
+      
+      function personAttributeFormProccesor(model, callback) {
+        var personAttributesPayload;
+        PersonAttributesProcessorService.generatePersonAttributesPayload(model, function(payload) {
+          personAttributesPayload = payload;
+          callback(personAttributesPayload);
         });
       }
 

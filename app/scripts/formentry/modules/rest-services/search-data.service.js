@@ -41,10 +41,18 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
     return service;
 
     function findLocation(searchText, onSuccess, onError) {
-      LocationResService.getLocations(searchText, function(results) {
+      LocationResService.findLocation(searchText, function(results) {
         var wrapped = wrapLocations(results);
         onSuccess(wrapped);
-      });
+      }, function(error){
+        onError(error);
+        //use test locations being used to load test data to all location based fields
+         var testLocations=LocationResService.getTestLocations ();
+         var wrapped = wrapLocations(testLocations);
+         //parsed test data to onsuccess to be removed later
+          onSuccess(wrapped);
+      });   
+   
     }
 
     function getLocationByUuid(uuid, onSuccess, onError) {

@@ -27,6 +27,7 @@
     var schema;
     var newForm;
     var testSchema = 'triage';
+    //var testSchema = 'schema_encounter';
     UtilService.getFormSchema(testSchema, function(data) {
       schema = data;
       $log.info('Schema Controller', schema);
@@ -346,6 +347,11 @@
       FormEntry.getFormPayload($scope.vm.model, function(payload) {
         var obsPayload = payload;
         $log.debug('test payload', JSON.stringify(obsPayload));
+      });
+
+      FormEntry.getPersonAttributesPayload($scope.vm.model, function(payload) {
+        var personAttributePayload = payload;
+        $log.debug('test person attribute payload', JSON.stringify(personAttributePayload));
       });
     };
 

@@ -172,6 +172,11 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
           var field = handlerMethod(question, model, questionMap);
           fields.push(field);
 
+        }  else if (question.type.startsWith('personAttribute')) {
+          handlerMethod = fieldHandlerService.getFieldHandler('personAttributeFieldHandler');
+          var field = handlerMethod(question, model, questionMap);
+          fields.push(field);
+
         } else {
           handlerMethod = fieldHandlerService.getFieldHandler('defaultFieldHandler');
           var field = handlerMethod(question, model, questionMap);

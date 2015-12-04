@@ -104,9 +104,13 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
     }
 
     function personAttributeFieldHandler(_question, model, questionMap) {
-      $log.info('loading fieldHandler');
+       $log.info('loading person attribute fieldHandler');
       var field = {};
       field = _createFormlyFieldHelper(_question, model, questionMap);
+      _handlePersonAttributeField(field);
+      field['templateOptions']['type'] = _question.questionOptions.rendering;
+      field['templateOptions']['deferredFilterFunction'] = SearchDataService.findLocation;
+      field['templateOptions']['getSelectedObjectFunction'] = SearchDataService.getLocationByUuid;
       _addToQuestionMap(_question, field, questionMap);
       return field;
     }
@@ -144,6 +148,9 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
       if (_question.type === 'obs') {
         fKey = _question.questionOptions.concept;
         key = 'obs' + id + '_' + fKey.replace(/-/gi, 'n'); // $$ Inserts a "$".
+      } else  if (_question.type === 'personAttribute') {
+        fKey = _question.questionOptions.attributeType;
+        key='personAttribute' + '_' + fKey.replace(/-/gi, 'n');
       } else {
         key = _question.type;
       }
@@ -226,6 +233,15 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
       field['templateOptions']['options'] = [];
       // return field;
     }
+    
+    function _handlePersonAttributeField(_field) {
+      var field = _field || {};
+      field['type'] = 'ui-select-extended';
+      field['templateOptions']['valueProp'] = 'uuId';
+      field['templateOptions']['labelProp'] = 'display';
+      field['templateOptions']['options'] = [];
+      return field;
+    }
 
     function _handleShowDate(_field) {
       var field = _field || {};
@@ -260,11 +276,19 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
     }
 
     function _createFormlyFieldHelper(_question, model, _id) {
-      var field = {};
-      var m = {
+      var field = {}; var m={};
+      m = {
         concept:_question.questionOptions.concept,
         schemaQuestion: _question, value:''
       };
+      
+      if(_question.type==='personAttribute'){
+        m = {
+        attributeType:_question.questionOptions.attributeType,
+        schemaQuestion: _question, value:''
+      };
+      }
+      
       var fieldKey = createFieldKey(_question, _id);
       var _model = {};
       _model[fieldKey] = m;

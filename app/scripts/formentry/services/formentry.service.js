@@ -21,7 +21,8 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
           createForm: createForm,
           registerCustomFieldHandler: registerCustomFieldHandler,
           getFormPayload:getFormPayload,
-          updateFormWithExistingObs: updateFormWithExistingObs
+          updateFormWithExistingObs: updateFormWithExistingObs,
+          getPersonAttributesPayload:getPersonAttributesPayload
         };
 
     return service;
@@ -46,6 +47,14 @@ jscs:disable disallowMixedSpacesAndTabs, requireDotNotation, requirePaddingNewLi
       formProcessorService.obsFormProccesor(model, function(payload) {
         obsPayload = payload;
         callback(obsPayload);
+      });
+    }
+    
+    function getPersonAttributesPayload(model, callback) {
+      var personAttributePayload;
+      formProcessorService.personAttributeFormProccesor(model, function(payload) {
+        personAttributePayload = payload;
+        callback(personAttributePayload);
       });
     }
 
