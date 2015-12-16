@@ -14,11 +14,11 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
 
   SearchDataService.$inject = ['ProviderResService', 'LocationResService',
     'LocationModel', 'ProviderModel', 'ConceptResService', 'ConceptModel',
-    'DrugResService', 'DrugModel', '$rootScope'];
+    'DrugResService', 'DrugModel', '$rootScope','AuthService'];
 
   function SearchDataService(ProviderResService, LocationResService,
     LocationModelFactory, ProviderModelFactory, ConceptResService,
-    ConceptModelFactory, DrugResService, DrugModelFactory, $rootScope, FormRestService) {
+    ConceptModelFactory, DrugResService, DrugModelFactory, $rootScope, FormRestService,AuthService) {
 
     var problemConceptClassesArray = ['Diagnosis', 'Symptom',
       'Symptom/Finding', 'Finding'];
@@ -35,7 +35,9 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
       getDrugConceptByUuid: getDrugConceptByUuid,
       findDrugs: findDrugs,
       findDrugByUuid: findDrugByUuid,
-      getConceptAnswers: getConceptAnswers
+      getConceptAnswers: getConceptAnswers,
+      findTestLocation:findTestLocation,
+      getSelectedTestLocation:getSelectedTestLocation
     };
 
     return service;
@@ -54,7 +56,21 @@ jscs:disable disallowQuotedKeysInObjects, safeContextKeyword, requireDotNotation
       });   
    
     }
-
+    
+    function findTestLocation(searchText, onSuccess, onError) {         
+        var results=LocationResService.getTestLocations()
+        var wrapped = wrapLocations(results);
+        onSuccess(wrapped);      
+  
+    }
+ 
+    function getSelectedTestLocation(uuid, onSuccess, onError) {
+      LocationResService.getSelectedTestLocation(uuid, function(results) {
+        var wrapped = wrapLocation(results);
+        onSuccess(wrapped);
+      });
+    }
+    
     function getLocationByUuid(uuid, onSuccess, onError) {
       LocationResService.getLocationByUuid(uuid, function(results) {
         var wrapped = wrapLocation(results);

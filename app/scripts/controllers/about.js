@@ -17,17 +17,40 @@
 
   AboutCtrl.$inject = ['$log', '$location', '$scope',
         'FormEntry', '$timeout', '$filter',
-        'TestService', 'UtilService'
+        'TestService', 'UtilService', 'configService', 'AuthService','SearchDataService'
     ];
 
   function AboutCtrl($log, $location, $scope, FormEntry,
-            $timeout, $filter, TestService, UtilService, configService) {
+            $timeout, $filter, TestService, UtilService, configService, AuthService, SearchDataService) {
     $scope.vm = {};
     $scope.vm.model = {};
     var schema;
     var newForm;
     var testSchema = 'triage';
     //var testSchema = 'schema_encounter';
+       //set url configService
+       configService.addJsonSchema('hostServer','http://localhost:8080/amrs/ws/rest/v1/');
+       console.log(configService.getSchema('hostServer'))
+       var user={username:'', password:''};
+        AuthService.isAuthenticated(user, function(authenticated) {       
+        if (!authenticated) // check if user is authenticated
+        {          
+          console.log('Invalid user name or password. Please try again');
+        } else {
+         console.log(authenticated)
+        }
+
+      }); 
+       
+       //testing search connection
+       SearchDataService.findLocation('abu',function(success){
+         console.log(JSON.stringify(success));
+       },
+       function(error){
+         alert(JSON.stringify(error))
+       })
+       
+   /////
     UtilService.getFormSchema(testSchema, function(data) {
       schema = data;
       $log.info('Schema Controller', schema);
@@ -355,8 +378,8 @@
       });
     };
 
-    // var form = TestService.getCompiledForm();
-    // $scope.vm.model = form.compiledSchema[0].compiledPage[0].sectionModel;
+  // var form = TestService.getCompiledForm();
+  // $scope.vm.model = form.compiledSchema[0].compiledPage[0].sectionModel;
 
     $scope.vm.submitLabel = 'Save';
 

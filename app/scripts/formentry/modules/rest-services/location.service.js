@@ -26,7 +26,9 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
       getLocationByUuidFromEtl:getLocationByUuidFromEtl,
       findLocation: findLocation,
       cachedLocations: cachedLocations,
-      getTestLocations:getTestLocations
+      getTestLocations:getTestLocations,
+      getSelectedTestLocation:getSelectedTestLocation
+      
     };
 
     return serviceDefinition;
@@ -141,7 +143,7 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
                 uuid:  'location9-uuid',
                 name:  'Location 9 = 9',
                 value: {
-                  uuid:  'location2-uuid',
+                  uuid:  'location9-uuid',
                   display:  'Location 9 '
                 },
                 attributeType: {
@@ -165,7 +167,7 @@ jshint -W003,-W109, -W106, -W098, -W003, -W068, -W004, -W033, -W030, -W117, -W11
       
     }
     
-    function getSelectedTestLocation(locationId){
+    function getSelectedTestLocation(locationId,onSuccess, onError){
       var locations=getTestLocations();
       return locations[locationId];
     }
